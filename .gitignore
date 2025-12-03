@@ -1,1 +1,4 @@
 /venv3.10/
+/data/
+*/__pycache__
+/checkpoints/
