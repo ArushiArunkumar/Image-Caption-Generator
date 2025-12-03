@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Caption Generation – Deep Learning Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Image Caption Generator</h1>
+    <p class="subtitle">CNN Encoder • Transformer Decoder • Beam Search</p>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="model.html">Architecture</a>
+        <a href="results.html">Results</a>
+        <a href="insights.html">Insights</a>
+    </nav>
+</header>
+
+<section class="content">
+
+    <h2>Project Overview</h2>
+    <p>
+        This project implements an end-to-end <strong>Image Caption Generation</strong> system using a 
+        <strong>ResNet-50 convolutional encoder</strong> and a 
+        <strong>Transformer-based decoder</strong>.  
+        The model is trained on the Flickr8k dataset and supports both greedy decoding and 
+        beam search for high-quality caption generation.
+    </p>
+
+    <h2>Problem Statement</h2>
+    <p>
+        Image captioning combines computer vision and natural language processing, requiring the model 
+        to understand visual content and generate syntactically and semantically coherent sentences. 
+        This is a central problem in multimodal AI research, and the architecture implemented here 
+        follows the modern encoder–decoder paradigm widely used in research publications.
+    </p>
+
+    <h2>Key Techniques Used</h2>
+    <ul>
+        <li>ResNet-50 feature extraction</li>
+        <li>Transformer decoder with multi-head attention</li>
+        <li>Custom vocabulary and text preprocessing</li>
+        <li>Teacher forcing during training</li>
+        <li>Greedy and beam search decoding</li>
+        <li>GPU acceleration using Apple Silicon (MPS)</li>
+    </ul>
+
+    <a class="btn" href="model.html">Next Page →</a>
+</section>
+
+<footer>
+    <p>© 2025 Image Caption Generator | Built by Arushi Arunkumar</p>
+</footer>
+
+</body>
+</html>

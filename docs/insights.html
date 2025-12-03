@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights – Image Caption Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Insights and Future Work</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="model.html">Architecture</a>
+        <a href="results.html">Results</a>
+        <a href="insights.html">Insights</a>
+    </nav>
+</header>
+
+<section class="content">
+
+    <h2>Training Observations</h2>
+    <p>
+        Training loss consistently decreases across epochs, demonstrating stable optimization. 
+        Validation loss remains lower due to teacher forcing. BLEU scores show expected fluctuations 
+        between epochs when using greedy decoding.
+    </p>
+
+    <h2>Key Insights</h2>
+    <ul>
+        <li>The Transformer decoder significantly improves linguistic quality compared to LSTM baselines.</li>
+        <li>Beam search decoding produces more coherent and contextually rich sentences.</li>
+        <li>ResNet-50 provides strong feature representations even without fine-tuning.</li>
+        <li>Apple Silicon (MPS) provides a substantial speed-up over CPU-only training.</li>
+    </ul>
+
+    <h2>Limitations</h2>
+    <ul>
+        <li>The encoder produces a single global feature vector, limiting spatial attention.</li>
+        <li>Small dataset size (Flickr8k) restricts linguistic diversity.</li>
+        <li>BLEU evaluation currently uses a single reference per caption.</li>
+    </ul>
+
+    <h2>Future Extensions</h2>
+    <ul>
+        <li>Use spatial feature maps for attention-based visual grounding.</li>
+        <li>Train and evaluate on MS COCO for improved linguistic coverage.</li>
+        <li>Implement length normalization and coverage penalties in beam search.</li>
+        <li>Fine-tune the visual encoder for domain adaptation.</li>
+        <li>Integrate a Vision Transformer (ViT) encoder.</li>
+    </ul>
+
+    <a class="btn" href="index.html">Back to Home →</a>
+
+</section>
+
+<footer>
+    <p>© 2025 Image Caption Generator | Built by Arushi Arunkumar</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results – Image Caption Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Model Results</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="model.html">Architecture</a>
+        <a href="results.html">Results</a>
+        <a href="insights.html">Insights</a>
+    </nav>
+</header>
+
+<section class="content">
+
+    <h2>Sample Generated Captions</h2>
+    <p>
+        Captions below are generated using both <strong>greedy decoding</strong> and 
+        <strong>beam search</strong>. Beam search provides significantly improved 
+        linguistic structure and descriptive accuracy.
+    </p>
+
+    <div class="sample-block">
+        <img src="assets/sample1.jpg" class="chart">
+        <p><strong>Greedy:</strong> a girl in a pink dress is standing in front of a wooden fence</p>
+        <p><strong>Beam (k=5):</strong> a young girl wearing a pink dress stands in front of a wooden fence</p>
+    </div>
+
+    <div class="sample-block">
+        <img src="assets/sample2.jpg" class="chart">
+        <p><strong>Greedy:</strong> a man is riding a bicycle on a city street</p>
+        <p><strong>Beam (k=5):</strong> a man rides a bicycle down a busy urban street</p>
+    </div>
+
+    <div class="sample-block">
+        <img src="assets/sample3.jpg" class="chart">
+        <p><strong>Greedy:</strong> two dogs are playing in a field</p>
+        <p><strong>Beam (k=5):</strong> two dogs run together while playing in a grassy field</p>
+    </div>
+
+    <h2>Training Curves</h2>
+    <img src="assets/train_loss.png" class="chart">
+    <img src="assets/val_loss.png" class="chart">
+    <img src="assets/bleu_scores.png" class="chart">
+
+    <a class="btn" href="insights.html">Next Page →</a>
+
+</section>
+
+<footer>
+    <p>© 2025 Image Caption Generator | Built by Arushi Arunkumar</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Architecture – Image Caption Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Model Architecture</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="model.html">Architecture</a>
+        <a href="results.html">Results</a>
+        <a href="insights.html">Insights</a>
+    </nav>
+</header>
+
+<section class="content">
+
+    <h2>Overall Pipeline</h2>
+    <img src="assets/pipeline.png" class="chart">
+
+    <h2>1. CNN Encoder (ResNet-50)</h2>
+    <p>
+        The encoder uses a pretrained ResNet-50 model with its classification head removed. 
+        The final 2048-dimensional feature vector is projected into a 512-dimensional embedding space. 
+        Freezing the convolutional layers during initial training stabilizes training, with 
+        optional fine-tuning for improved performance.
+    </p>
+
+    <img src="assets/encoder.png" class="chart">
+
+    <h2>2. Transformer Decoder</h2>
+    <p>
+        The Transformer decoder consists of <strong>three layers</strong> with 
+        <strong>multi-head self-attention</strong>, <strong>cross-attention</strong> 
+        over the encoder features, and a <strong>feed-forward network</strong>.  
+        Positional encoding is added to preserve sequence order.  
+        Causal masking ensures autoregressive generation.
+    </p>
+
+    <img src="assets/decoder.png" class="chart">
+
+    <h2>3. Caption Generation</h2>
+    <p>
+        During inference, captions can be generated using:
+    </p>
+    <ul>
+        <li><strong>Greedy decoding</strong> – selects the highest probability word at each step.</li>
+        <li><strong>Beam search</strong> – explores multiple candidate sequences and 
+            selects the highest-likelihood caption.</li>
+    </ul>
+
+    <a class="btn" href="results.html">Next Page →</a>
+
+</section>
+
+<footer>
+    <p>© 2025 Image Caption Generator | Built by Arushi Arunkumar</p>
+</footer>
+
+</body>
+</html>
