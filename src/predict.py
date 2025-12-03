@@ -6,6 +6,7 @@ from torchvision import transforms
 from PIL import Image
 from model import EncoderDecoderCaptionModel
 from utils import load_json, greedy_decode
+from utils import greedy_decode, beam_search_decode
 
 def load_model(checkpoint, device, vocab_size, embed_dim, decoder_layers=3, num_heads=8, ff_dim=2048, train_cnn=False):
     model = EncoderDecoderCaptionModel(
@@ -30,6 +31,7 @@ if __name__ == "__main__":
     parser.add_argument("--embed_dim", type=int, default=512)
     parser.add_argument("--max_len", type=int, default=20)
     parser.add_argument("--device", default=None)
+    parser.add_argument("--beam_size", type=int, default=1, help="Beam width for beam search. 1 = greedy.")
     args = parser.parse_args()
 
     # device selection
@@ -70,8 +72,30 @@ if __name__ == "__main__":
     for path in imgs:
         im = Image.open(path).convert("RGB")
         tensor = transform(im).unsqueeze(0).to(device)
-        tokens, sentences = greedy_decode(model, tensor, idx2word, start_idx, end_idx, max_len=args.max_len, device=device)
-        print("IMAGE:", path)
-        print("GREEDY:", sentences[0])
-        print("TOKENS:", tokens[0][:30])
+
+        if args.beam_size == 1:
+            # GREEDY decoding
+            tokens, sentences = greedy_decode(
+                model, tensor, idx2word, start_idx, end_idx,
+                max_len=args.max_len, device=device
+            )
+            print("IMAGE:", path)
+            print("DECODE (GREEDY):", sentences[0])
+            print("TOKENS:", tokens[0][:30])
+
+        else:
+            # BEAM SEARCH decoding
+            tokens, sentences = beam_search_decode(
+                model, tensor, idx2word, start_idx, end_idx,
+                beam_size=args.beam_size,
+                max_len=args.max_len,
+                device=device
+            )
+            print("IMAGE:", path)
+            print(f"DECODE (BEAM={args.beam_size}):", sentences[0])
+            print("TOKENS:", tokens[0][:30])
+
         print("-----")
+
+
+    

@@ -91,3 +91,89 @@ def compute_bleu(references, hypotheses):
     # corpus_bleu expects references as list of list of tokens (words)
     score = corpus_bleu(references, hypotheses, smoothing_function=chencherry.method4)
     return score
+
+@torch.no_grad()
+def beam_search_decode(
+    model,
+    images,
+    idx2word,
+    start_idx,
+    end_idx,
+    beam_size=3,
+    max_len=20,
+    device="cpu"
+):
+    """
+    Beam search decoding for image captioning.
+    Returns:
+        - a list of token sequences
+        - a list of decoded sentences
+    """
+    model.eval()
+
+    # ----- ENCODER -----
+    encoder_out = model.encoder(images)  # [batch, embed_dim]
+    batch_size = encoder_out.size(0)
+
+    # We only support batch_size = 1 for beam search (common practice)
+    assert batch_size == 1, "Beam search only supports batch_size=1"
+
+    encoder_out = encoder_out.to(device)
+
+    # ----- INITIAL BEAM -----
+    beams = [(torch.tensor([start_idx], device=device), 0.0)]
+    completed = []
+
+    for _ in range(max_len):
+        new_beams = []
+
+        for seq, score in beams:
+            if seq[-1].item() == end_idx:
+                completed.append((seq, score))
+                continue
+
+            # Prepare decoder input
+            seq_input = seq.unsqueeze(0)  # [1, seq_len]
+            tgt_pad_mask = (seq_input == 0)
+
+            # Decoder forward
+            logits = model.decoder(
+                tgt_sequences=seq_input,
+                encoder_out=encoder_out,
+                tgt_pad_mask=tgt_pad_mask
+            )
+
+            next_token_logits = logits[0, -1, :]  # [vocab_size]
+            log_probs = torch.nn.functional.log_softmax(next_token_logits, dim=-1)
+
+            # Top beam_size next tokens
+            topk_log_probs, topk_ids = torch.topk(log_probs, beam_size)
+
+            for k in range(beam_size):
+                new_seq = torch.cat([seq, topk_ids[k].unsqueeze(0)])
+                new_score = score + topk_log_probs[k].item()
+                new_beams.append((new_seq, new_score))
+
+        # Sort new beams by cumulative log probability
+        new_beams = sorted(new_beams, key=lambda x: x[1], reverse=True)
+        beams = new_beams[:beam_size]
+
+        # Early stopping if all beams are finished
+        if all(seq[-1].item() == end_idx for seq, _ in beams):
+            completed.extend(beams)
+            break
+
+    if len(completed) == 0:
+        completed = beams
+
+    # Choose best sequence by score
+    best_seq, best_score = max(completed, key=lambda x: x[1])
+    best_seq = best_seq.tolist()
+
+    # Remove <start>
+    best_seq = best_seq[1:]
+
+    # Convert to sentence
+    sentence = tokens_to_sentence(best_seq, idx2word, stop_token="<end>")
+
+    return [best_seq], [sentence]
