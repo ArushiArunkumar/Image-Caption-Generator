@@ -4,22 +4,22 @@ from PIL import Image
 from torchvision import transforms
 import io, json
 
-from model import EncoderDecoderCaptionModel
-from utils import load_json, greedy_decode, beam_search_decode
+from src.model import EncoderDecoderCaptionModel
+from src.utils import load_json, greedy_decode, beam_search_decode
 
 app = Flask(__name__)
 
 device = torch.device("cpu")
 
 # Load vocab
-word2idx = json.load(open("model/word2idx.json"))
-idx2word = json.load(open("model/idx2word.json"))
+word2idx = json.load(open("backend/model/word2idx.json"))
+idx2word = json.load(open("backend/model/idx2word.json"))
 start_idx = word2idx["<start>"]
 end_idx = word2idx["<end>"]
 vocab_size = len(word2idx)
 
 # Load model
-ckpt = torch.load("model/best_model.pth", map_location=device)
+ckpt = torch.load("backend/model/best_model.pth", map_location=device)
 model = EncoderDecoderCaptionModel(embed_dim=512, vocab_size=vocab_size)
 model.load_state_dict(ckpt["model_state"])
 model.eval().to(device)

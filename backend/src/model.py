@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from model_encoder import EncoderCNN
-from model_decoder import TransformerCaptionDecoder
+from src.model_encoder import EncoderCNN
+from src.model_decoder import TransformerCaptionDecoder
 
 
 class EncoderDecoderCaptionModel(nn.Module):
