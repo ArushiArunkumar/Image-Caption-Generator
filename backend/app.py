@@ -3,6 +3,7 @@ import torch
 from PIL import Image
 from torchvision import transforms
 import io, json
+import os
 
 from src.model import EncoderDecoderCaptionModel
 from src.utils import load_json, greedy_decode, beam_search_decode
@@ -59,4 +60,5 @@ def home():
     return "Image Captioning API is running."
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
